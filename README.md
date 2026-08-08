@@ -1,5 +1,8 @@
 # gdoc-vim
 
+[![CI](https://github.com/gmajian/gdoc-vim/actions/workflows/ci.yml/badge.svg)](https://github.com/gmajian/gdoc-vim/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/gdoc-vim)](https://pypi.org/project/gdoc-vim/)
+
 Edit **Google Docs as Markdown** in your terminal editor.
 
 Google Docs speaks Markdown natively (both export and import), so a document can
