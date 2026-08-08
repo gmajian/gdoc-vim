@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-import tomllib
 from importlib.metadata import version
 from pathlib import Path
 
@@ -14,6 +13,11 @@ import pytest
 import gdoc_vim
 from gdoc_vim import cli
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # added to the stdlib in 3.11
+    tomllib = None
+
 PYPROJECT = Path(__file__).resolve().parent.parent / "pyproject.toml"
 
 
@@ -21,6 +25,7 @@ def test_version_matches_installed_distribution():
     assert gdoc_vim.__version__ == version("gdoc-vim")
 
 
+@pytest.mark.skipif(tomllib is None, reason="tomllib requires Python 3.11+")
 @pytest.mark.skipif(not PYPROJECT.exists(), reason="not a source checkout")
 def test_version_matches_pyproject():
     declared = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))["project"]["version"]
