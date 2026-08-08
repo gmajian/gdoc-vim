@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gdoc-vim"
+version = "0.1.0"
+description = "Edit Google Docs as Markdown in your terminal editor (vim)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Albert Ma" }]
+keywords = ["google-docs", "markdown", "vim", "cli", "editor"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Editors",
+]
+dependencies = [
+    "google-api-python-client>=2.100",
+    "google-auth>=2.23",
+    "google-auth-oauthlib>=1.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/gmajian/gdoc-vim"
+Repository = "https://github.com/gmajian/gdoc-vim"
+Issues = "https://github.com/gmajian/gdoc-vim/issues"
+
+[project.scripts]
+gdoc-vim = "gdoc_vim.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gdoc_vim"]
+# Ship the bundled OAuth client when present; see README.
+artifacts = ["src/gdoc_vim/client_secret.json"]

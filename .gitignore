@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Secrets — never commit OAuth credentials or cached tokens
+credentials.json
+token.json
+.config/
+
+# The bundled OAuth client is injected at release time, not kept in git.
+src/gdoc_vim/client_secret.json
+
+# Tooling
+.claude/
+
+# OS / editor
+.DS_Store
+*.swp
