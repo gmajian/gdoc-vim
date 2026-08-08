@@ -17,16 +17,14 @@ sharing settings, and revision history.
 
 ## Install
 
-Install straight from GitHub:
+```bash
+pipx install gdoc-vim
+```
+
+Or straight from source:
 
 ```bash
 pipx install git+https://github.com/gmajian/gdoc-vim
-```
-
-Once published to PyPI, this works too:
-
-```bash
-pipx install gdoc-vim
 ```
 
 Either way you get a `gdoc-vim` command on your `PATH`. pipx keeps the tool in
@@ -178,9 +176,20 @@ work on it:
 
 ```bash
 python3 -m venv .venv
-./.venv/bin/pip install -e .
+./.venv/bin/pip install -e ".[dev]"
 ./.venv/bin/gdoc-vim --help
 ```
+
+### Tests
+
+```bash
+./.venv/bin/python -m pytest
+```
+
+The suite runs offline against an in-memory stand-in for the Drive API, so it
+needs no credentials and makes no network calls. `tests/conftest.py` provides
+that fake service plus a scriptable fake editor, which together cover the
+export → edit → upload round trip end to end.
 
 ## License
 

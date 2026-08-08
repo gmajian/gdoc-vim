@@ -24,6 +24,9 @@ dependencies = [
     "google-auth-oauthlib>=1.1",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
 [project.urls]
 Homepage = "https://github.com/gmajian/gdoc-vim"
 Repository = "https://github.com/gmajian/gdoc-vim"
@@ -31,6 +34,9 @@ Issues = "https://github.com/gmajian/gdoc-vim/issues"
 
 [project.scripts]
 gdoc-vim = "gdoc_vim.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gdoc_vim"]
