@@ -16,6 +16,10 @@ It pulls the doc as Markdown, opens it in `vim` (or your `$EDITOR`), and on save
 converts it back and pushes it to the same document — preserving its link,
 sharing settings, and revision history.
 
+Background and a short walkthrough:
+[Editing Google Docs Directly in vim](https://www.sandcomp.com/blog/en/2026/08/07/gdoc-vim-en/)
+([中文](https://www.sandcomp.com/blog/2026/08/07/gdoc-vim/))
+
 ---
 
 ## Install
