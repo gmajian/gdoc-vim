@@ -29,6 +29,8 @@ def run(service, monkeypatch):
             push=None,
             confirm=False,
             reauth=False,
+            no_browser=False,
+            port=None,
         )
         args.update(overrides)
         return cli.run(argparse.Namespace(**args))

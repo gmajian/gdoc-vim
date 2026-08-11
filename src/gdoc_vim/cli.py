@@ -65,7 +65,12 @@ def _edit_and_push(service, file_id: str, *, confirm: bool) -> int:
 
 
 def run(args: argparse.Namespace) -> int:
-    service = build_drive_service(force=args.reauth)
+    service = build_drive_service(
+        force=args.reauth,
+        port=args.port,
+        # Only override auto-detection when the flag was actually given.
+        no_browser=True if args.no_browser else None,
+    )
 
     if args.new:
         file_id = create_doc(service, args.new)
@@ -117,6 +122,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-c", "--confirm", action="store_true",
                    help="Show a diff and ask before uploading.")
     p.add_argument("--reauth", action="store_true", help="Re-run browser sign-in.")
+    p.add_argument("--no-browser", action="store_true",
+                   help="Print the sign-in URL instead of opening a browser.")
+    p.add_argument("--port", type=int, metavar="N",
+                   help="Port for the sign-in callback (useful with ssh -L).")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return p
 

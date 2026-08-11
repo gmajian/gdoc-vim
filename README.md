@@ -86,6 +86,28 @@ gdoc-vim <url> --reauth
 Saving in the editor uploads immediately. Pass `-c/--confirm` if you'd rather
 see a diff and approve it first.
 
+### Signing in over ssh
+
+On a remote machine there is no browser to open. gdoc-vim notices a remote
+session (`$SSH_CONNECTION`, `$SSH_TTY`, or Linux with no `$DISPLAY`) and
+switches to a copy-and-paste flow instead — no port forwarding, no tunnel.
+
+It prints a sign-in URL. Open that in a browser anywhere and approve access.
+Google then sends the browser to `http://localhost:8080/?code=...`, which shows
+a **"site can't be reached"** page — that is expected, nothing is listening
+there. The code you need is sitting in the address bar. Copy the whole address,
+paste it back into the terminal, and sign-in completes.
+
+Pass `--no-browser` to force this mode if the detection guesses wrong, or
+`--port N` if something on your machine already answers on 8080.
+
+If you use many machines, it can be easier to authorize once somewhere with a
+browser and copy the cached token across:
+
+```bash
+scp ~/.config/gdoc-vim/token.json you@remote-host:~/.config/gdoc-vim/
+```
+
 ### Choosing the editor
 
 `gdoc-vim` uses, in order: `$GDOC_VIM_EDITOR`, `$VISUAL`, `$EDITOR`, then `vim`.
