@@ -194,7 +194,10 @@ are worth knowing before you point this at a document written in the web editor:
 
 - **Multiple tabs are flattened into one.** A document with several tabs comes
   back as a single tab holding all the content. Nothing is deleted, but the
-  structure is gone. **Don't use gdoc-vim on multi-tab documents.**
+  structure is gone, so gdoc-vim refuses to upload to a multi-tab document.
+  (`-o` still exports one, and `--force` overrides the refusal.) The check
+  needs the Google Docs API enabled in your Cloud project; without it the tool
+  says so once and carries on unprotected.
 - **Smart chips become plain links.** Date chips, people chips, and file chips
   all degrade to ordinary text or links on the way back.
 

@@ -198,3 +198,8 @@ def build_drive_service(
         interactive=interactive, force=force, port=port, no_browser=no_browser
     )
     return build("drive", "v3", credentials=creds, cache_discovery=False)
+
+
+def build_docs_service():
+    """Authenticated Docs v1 client, reusing the cached token."""
+    return build("docs", "v1", credentials=get_credentials(), cache_discovery=False)

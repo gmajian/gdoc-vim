@@ -11,7 +11,8 @@ import sys
 from pathlib import Path
 
 from . import __version__
-from .auth import build_drive_service
+from .auth import build_docs_service, build_drive_service
+from .docs import count_tabs
 from .drive import (
     HttpError,
     create_doc,
@@ -35,6 +36,33 @@ def _confirm(prompt: str) -> bool:
         return input(prompt).strip().lower() in ("y", "yes")
     except EOFError:
         return False
+
+
+def _tabs_would_be_flattened(file_id: str, force: bool) -> bool:
+    """True when uploading would merge a multi-tab document into one.
+
+    Runs before the editor opens so nobody edits work that cannot be saved.
+    """
+    if force:
+        return False
+
+    tabs = count_tabs(build_docs_service(), file_id)
+    if tabs is None:
+        _eprint(
+            "Note: could not check this document for tabs. Enable the Google "
+            "Docs API in your Cloud project to turn the check on."
+        )
+        return False
+    if tabs < 2:
+        return False
+
+    _eprint(
+        f"This document has {tabs} tabs, and uploading Markdown would merge "
+        "them into one.\nNo content would be lost, but the tab structure "
+        "would be. Refusing.\n\n"
+        "Use -o to export a copy, or --force if flattening is what you want."
+    )
+    return True
 
 
 def _edit_and_push(service, file_id: str, *, confirm: bool) -> int:
@@ -95,12 +123,17 @@ def run(args: argparse.Namespace) -> int:
         if not src.exists():
             _eprint(f"File not found: {src}")
             return 1
+        if _tabs_would_be_flattened(file_id, args.force):
+            return 1
         if args.confirm and not _confirm(f"Overwrite document with {src}? [y/N] "):
             _eprint("Aborted; document unchanged.")
             return 1
         update_markdown(service, file_id, src.read_text("utf-8"))
         _eprint(f"Pushed {src} -> {doc_url(file_id)}")
         return 0
+
+    if _tabs_would_be_flattened(file_id, args.force):
+        return 1
 
     meta = get_doc_metadata(service, file_id)
     _eprint(f"Editing: {meta.get('name')!r}")
@@ -121,6 +154,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-p", "--push", metavar="FILE", help="Upload FILE; no editor.")
     p.add_argument("-c", "--confirm", action="store_true",
                    help="Show a diff and ask before uploading.")
+    p.add_argument("--force", action="store_true",
+                   help="Upload even if it would flatten a multi-tab document.")
     p.add_argument("--reauth", action="store_true", help="Re-run browser sign-in.")
     p.add_argument("--no-browser", action="store_true",
                    help="Print the sign-in URL instead of opening a browser.")

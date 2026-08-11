@@ -18,6 +18,9 @@ from gdoc_vim.onboarding import MissingClientSecretsError
 def run(service, monkeypatch):
     """Invoke cli.run() with the fake Drive service and default arguments."""
     monkeypatch.setattr(cli, "build_drive_service", lambda **kw: service)
+    # Single-tab document, so the flattening guard never fires here.
+    monkeypatch.setattr(cli, "build_docs_service", lambda: None)
+    monkeypatch.setattr(cli, "count_tabs", lambda service, file_id: 1)
 
     def _run(**overrides):
         args = dict(
@@ -31,6 +34,7 @@ def run(service, monkeypatch):
             reauth=False,
             no_browser=False,
             port=None,
+            force=False,
         )
         args.update(overrides)
         return cli.run(argparse.Namespace(**args))
