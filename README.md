@@ -184,19 +184,32 @@ to create their own client.
 
 ## Limitations
 
-Markdown is a lossy representation of a Google Doc. The round trip preserves
-headings, lists, bold/italic, links, code blocks, blockquotes, and simple
-tables, but features with no Markdown equivalent may be **simplified or lost**:
+Markdown is a lossy representation of a Google Doc. Plain prose round-trips
+cleanly — headings, lists, bold/italic, links, code blocks, blockquotes, and
+simple tables all survive — and repeated syncing is stable: export, import, and
+export again gives you a byte-identical file.
 
-- comments and suggested edits
-- embedded drawings, charts, and equations
-- images (behavior depends on Google's converter)
-- fine-grained styling (fonts, colors, spacing)
+What does *not* survive is anything Markdown has no way to express. Two cases
+are worth knowing before you point this at a document written in the web editor:
 
-**A push replaces the document's entire body.** Google keeps full revision
-history, so you can restore a previous version via **File → Version history** in
-the Docs UI if a conversion surprises you. Try the tool on a copy of anything
-important first.
+- **Multiple tabs are flattened into one.** A document with several tabs comes
+  back as a single tab holding all the content. Nothing is deleted, but the
+  structure is gone. **Don't use gdoc-vim on multi-tab documents.**
+- **Smart chips become plain links.** Date chips, people chips, and file chips
+  all degrade to ordinary text or links on the way back.
+
+Also lost or simplified: comments and suggested edits, embedded drawings,
+charts, equations, and fine-grained styling (fonts, colors, spacing). Image
+handling depends on Google's converter.
+
+**A push replaces the document's entire body**, so these losses apply to the
+whole document, not only the part you edited. Google keeps full revision
+history, so **File → Version history** in the Docs UI will get you back if a
+conversion surprises you — but try the tool on a copy of anything important
+first.
+
+In short: this works best on **text-first documents** you mostly write in
+Markdown anyway. The richer a document is, the less it suits this workflow.
 
 ## Development
 
