@@ -26,7 +26,8 @@ def test_guide_covers_each_setup_step():
     guide = setup_guide(DEST)
     for fragment in [
         "console.cloud.google.com",
-        "Google Drive API",
+        "drive.googleapis.com",
+        "docs.googleapis.com",
         "OAuth consent screen",
         "Test users",
         "In production",

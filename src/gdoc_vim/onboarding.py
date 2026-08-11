@@ -30,10 +30,13 @@ This is a one-time setup and takes about 3 minutes.
   2. Create a project (top-left project dropdown -> New Project).
      Any name works, e.g. "gdoc-vim".
 
-  3. Enable the APIs:
-     Search for "Google Drive API" -> open it -> click ENABLE.
-     Do the same for "Google Docs API". Drive is required; Docs is
-     only used to warn you before flattening a multi-tab document.
+  3. Enable the two APIs, clicking ENABLE on each page:
+
+       https://console.cloud.google.com/apis/library/drive.googleapis.com
+       https://console.cloud.google.com/apis/library/docs.googleapis.com
+
+     Drive is required. Docs is only used to warn you before
+     flattening a multi-tab document.
 
   4. Configure the consent screen:
      "APIs & Services -> OAuth consent screen"

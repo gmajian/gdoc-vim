@@ -12,7 +12,7 @@ from pathlib import Path
 
 from . import __version__
 from .auth import build_docs_service, build_drive_service
-from .docs import count_tabs
+from .docs import DOCS_API_ENABLE_URL, count_tabs
 from .drive import (
     HttpError,
     create_doc,
@@ -49,8 +49,9 @@ def _tabs_would_be_flattened(file_id: str, force: bool) -> bool:
     tabs = count_tabs(build_docs_service(), file_id)
     if tabs is None:
         _eprint(
-            "Note: could not check this document for tabs. Enable the Google "
-            "Docs API in your Cloud project to turn the check on."
+            "Note: could not check this document for tabs. To turn the check "
+            "on, enable the Google Docs API:\n"
+            f"  {DOCS_API_ENABLE_URL}"
         )
         return False
     if tabs < 2:
